@@ -1,6 +1,6 @@
-defmodule Marina do
+defmodule Ezzel do
   @moduledoc """
-  Documentation for Fabio.
+  Documentation for Ezzel.
   """
 
   def final_score() do
@@ -10,12 +10,12 @@ defmodule Marina do
     # Data transform
     get_score()
     |> String.split("\n")
-    # |> Enum.reduce(base_game, fn x, acc ->
-    #   case parse_line(x) do
-    #     {:score, team, player_number} -> update_team_score(acc, team, player_number)
-    #     {:ignore, _response} -> acc
-    #   end
-    # end)
+    |> Enum.reduce(base_game, fn x, acc ->
+      case parse_line(x) do
+        {:score, team, player_number} -> update_team_score(acc, team, player_number)
+        {:ignore, _response} -> acc
+      end
+    end)
   end
 
   defp parse_line("SCORE AWAY PLAYER" <> player_number), do: {:score, :away, player_number}
@@ -24,18 +24,15 @@ defmodule Marina do
 
   defp update_team_score(acc, team, player_number) do
 
-
-    #%{away: away, score: away_score, home: home, score: home_score} = acc
-    # case team do
-    #   :away -> acc= %{away: %{players: %{}, score: 0}, home: %{players: %{}, score: 0}}
-    #   :home -> acc= %{away: %{players: %{}, score: 0}, home: %{players: %{}, score: 0}}
-    # end
-    Map.update!(acc, team, fn(x) ->
-      map = %{player_number: player_number }
-      %{players: %{}, score: x.score + 1}
-
+  Map.update!(acc, team, fn(x) ->
+      # %{players: Map.put(x.players,player_number, value = 0  ), score: x.score + 1}
+      %{players: Map.update(x.players,player_number, 1 , &(&1 + 1) ), score: x.score + 1}
     end)
 
+  end
+
+  def get_count(count) do
+    count + 1
   end
 
   defp get_score do
