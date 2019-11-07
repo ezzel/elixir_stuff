@@ -25,7 +25,6 @@ defmodule Ezzel do
   defp update_team_score(acc, team, player_number) do
 
   Map.update!(acc, team, fn(x) ->
-      # %{players: Map.put(x.players,player_number, value = 0  ), score: x.score + 1}
       %{players: Map.update(x.players,player_number, 1 , &(&1 + 1) ), score: x.score + 1}
     end)
 
